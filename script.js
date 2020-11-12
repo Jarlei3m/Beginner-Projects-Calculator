@@ -6,9 +6,19 @@ const displayResult = document.querySelector('#display-result');
 
 numbers.forEach(number => {
     number.addEventListener('click', (event) => {
-        const pressedBtn = event.target.innerText;
-        
-        display.value += pressedBtn;
+        if (display.value.length < 8) {
+            const pressedBtn = event.target.innerText;
+            
+            // User can see a display showing the current number entered...
+            display.value += pressedBtn;
+
+            // User can click the 'C' button to clear the last number or the last operation. 
+            // If the users last entry was an operation the display will be updated to the value that preceded it.
+
+            const operation = display.value;
+
+            calc(operation);
+        }
     })
 })
 
@@ -16,10 +26,16 @@ operators.forEach(operator => {
     operator.addEventListener('click', (event) => {
         const pressedBtn = event.target.innerText;
 
+        //... 'C' button (for clear)
         if (pressedBtn == 'C') {
             display.value = display.value.slice(0, -1);
+
+            const operation = display.value;
+
+            calc(operation);
         }
 
+        //  User can click the 'AC' button to clear all internal work areas and to set the display to 0.
         if (pressedBtn == 'AC') {
             display.value ='';
             displayResult.value ='';
@@ -30,17 +46,25 @@ operators.forEach(operator => {
         }
 
         if (pressedBtn == '=') {
-            const operation = display.value;
+            displayResult.classList.add('update');
+            display.value = displayResult.value; 
 
-            calc(operation);
+            setTimeout(fadeoutResult, 1000);
+
+            function fadeoutResult() {
+                displayResult.value = '';
+                displayResult.classList.remove('update');
+            }
+            
         }
 
-        if (pressedBtn != 'C' && pressedBtn != 'AC' && pressedBtn != '=' && pressedBtn != 'ANS') {
-            display.value += pressedBtn;
+        // User can enter numbers as sequences up to 8 digits long by clicking on
+        // digits in the entry pad. Entry of any digits more than 8 will be ignored.
+        if (display.value.length < 8) {
+            if (pressedBtn != 'C' && pressedBtn != 'AC' && pressedBtn != '=' && pressedBtn != 'ANS') {
+                display.value += pressedBtn;
+            }
         }
-        
-        // pressedBtn.innerText == 'x'? display.value += '*' : display.value += pressedBtn.innerText;
-        // pressedBtn.innerText == 'C'? display.value = display.value.slice(0, -1) : display.value += pressedBtn.innerText;
     })
 })
 
@@ -52,35 +76,68 @@ function calc(operation) {
     let expression1 = '1';
     let expression2 = 0;
     let lastNumber ='';
-    let op =''
+    let op ='';
     let final = '';
+
+    let i = 0;
+
+    // check each charactere
     results.map(each => {
         if (each == 'x' || each == '*') {
-            expression1 *= parseInt(count); // 5
+            i++
+
+            if( i == 1 ) {
+                expression1 *= parseInt(count);
+            } else {
+                expression1 = final;
+            }
+
             count = '';
             op = each;
         } else if (each == '/') {
-            expression1 = parseInt(count) / expression1; 
+            i++
+
+            if( i == 1 ) {
+                // first time
+                expression1 = parseInt(count) / expression1; 
+            } else {
+                expression1 = final;
+            }
+
             count = '';
             op = each;
         } else if (each == '+') {
-            expression2 += parseInt(count); 
+            i++
+
+            if ( i == 1 ) {
+                expression2 += parseInt(count); 
+            } else {                
+                expression2 = final;
+            }
+
             count = '';
             op = each;
         } else if (each == '-') {
-            expression2 = expression2 - parseInt(count); 
-            console.log(count)
-            console.log(expression2)
+            i++
+
+            if ( i == 1 ) {
+                expression2 = parseInt(count) - expression2; 
+            } else {
+                expression2 = final;
+            }
+         
             count = '';
             op = each;
         }
         else {
-            count += each; // 4
+            // receive each number of the string
+            count += each; 
 
-            lastNumber = parseInt(count);
-            
-            console.log(lastNumber)
-            
+            // receive last number after the last operator
+            lastNumber = parseInt(count); 
+    
+            // 'op' checks which operator was pressed last
+            // calc the last operation
             if(op == 'x' || op =='*') {
                 final = expression1 * lastNumber;
             }
@@ -94,8 +151,16 @@ function calc(operation) {
                 final = expression2 - lastNumber;
             }
 
-            displayResult.value = final;
-            display.value = '';
+
+            // 'ERR' displayed if any operation would exceed the 8 digit maximum
+            if ( final.toString().length <= 8) {
+                //...show the result of the last operation.
+                displayResult.value = final ;
+                
+            } else {
+                displayResult.value = ''
+                display.value = 'ERR';
+            }
         }
     })
 

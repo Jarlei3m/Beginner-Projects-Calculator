@@ -21,7 +21,6 @@ main {
     width: 400px;
     height: 600px;
 
-    border: 1px solid rgb(121, 121, 121);
     border-radius: 8px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 
@@ -46,33 +45,40 @@ h1 {
     align-items: center;
 }
 
-.display {
-    /* padding: 32px; */
-}
-
 input#display {
-    padding: 40px 12px;
+    padding: 40px 18px;
     text-align: right;
 
     width: 400px;
     outline: none;
 
-    font-size: 28px;
+    font-size: 36px;
     border-bottom: none;
+
+    border: none;
 }
 
 input#display-result {
-    padding: 12px 8px;
+    padding: 12px 18px;
     text-align: right;
 
     width: 400px;
     outline: none;
-    border-top: none;
+    border: none;
 
-    font-size: 16px;
+    border-bottom: 1px solid #2c43c4;
+
+    color: rgb(122, 122, 122);
+
+    font-size: 28px;
+
+    transition: color 1s;
 }
 
 
+input#display-result.update {
+    color: white;
+}
 
 .grid {
     display: grid;
