@@ -18,9 +18,9 @@ numbers.forEach(number => {
             const operation = display.value;
 
             calc(operation);
-        }
-    })
-})
+        };
+    });
+});
 
 operators.forEach(operator => {
     operator.addEventListener('click', (event) => {
@@ -33,17 +33,21 @@ operators.forEach(operator => {
             const operation = display.value;
 
             calc(operation);
-        }
+        };
 
         //  User can click the 'AC' button to clear all internal work areas and to set the display to 0.
         if (pressedBtn == 'AC') {
             display.value ='';
             displayResult.value ='';
-        }
+        };
 
         if (pressedBtn == 'ANS') {
             display.value += displayResult.value;
-        }
+
+            const operation = display.value;
+
+            calc(operation);
+        };
 
         if (pressedBtn == '=') {
             displayResult.classList.add('update');
@@ -54,9 +58,9 @@ operators.forEach(operator => {
             function fadeoutResult() {
                 displayResult.value = '';
                 displayResult.classList.remove('update');
-            }
+            };
             
-        }
+        };
 
         // User can enter numbers as sequences up to 8 digits long by clicking on
         // digits in the entry pad. Entry of any digits more than 8 will be ignored.
@@ -64,13 +68,13 @@ operators.forEach(operator => {
             if (pressedBtn != 'C' && pressedBtn != 'AC' && pressedBtn != '=' && pressedBtn != 'ANS') {
                 display.value += pressedBtn;
             }
-        }
-    })
-})
+        };
+    });
+});
 
 
 function calc(operation) {
-    const results = operation.split(''); // ["5", "x", "4", "x", "3", "/", "2"]
+    const results = operation.split(''); // ex: ["5", "x", "4", "x", "3", "/", "2"]
 
     let count ='';
     let expression1 = '1';
@@ -86,45 +90,31 @@ function calc(operation) {
         if (each == 'x' || each == '*') {
             i++
 
-            if( i == 1 ) {
-                expression1 *= parseInt(count);
-            } else {
-                expression1 = final;
-            }
+            i == 1 ? expression1 *= parseInt(count) : expression1 = final;
 
             count = '';
             op = each;
-        } else if (each == '/') {
+        } 
+        else if (each == '/') {
             i++
 
-            if( i == 1 ) {
-                // first time
-                expression1 = parseInt(count) / expression1; 
-            } else {
-                expression1 = final;
-            }
+            i == 1 ? expression1 = parseInt(count) / expression1 : expression1 = final;
 
             count = '';
             op = each;
-        } else if (each == '+') {
+        } 
+        else if (each == '+') {
             i++
 
-            if ( i == 1 ) {
-                expression2 += parseInt(count); 
-            } else {                
-                expression2 = final;
-            }
+            i == 1 ? expression2 += parseInt(count) : expression2 = final;
 
             count = '';
             op = each;
-        } else if (each == '-') {
+        } 
+        else if (each == '-') {
             i++
 
-            if ( i == 1 ) {
-                expression2 = parseInt(count) - expression2; 
-            } else {
-                expression2 = final;
-            }
+            i == 1 ? expression2 = parseInt(count) - expression2 : expression2 = final;
          
             count = '';
             op = each;
@@ -140,16 +130,19 @@ function calc(operation) {
             // calc the last operation
             if(op == 'x' || op =='*') {
                 final = expression1 * lastNumber;
-            }
+            };
+            
             if(op == '/') {
                 final = expression1 / lastNumber;
-            }
+            };
+
             if(op == '+') {
                 final = expression2 + lastNumber;
-            }
+            };
+
             if(op == '-') {
                 final = expression2 - lastNumber;
-            }
+            };
 
 
             // 'ERR' displayed if any operation would exceed the 8 digit maximum
@@ -157,12 +150,13 @@ function calc(operation) {
                 //...show the result of the last operation.
                 displayResult.value = final ;
                 
-            } else {
+            }
+            else {
                 displayResult.value = ''
                 display.value = 'ERR';
-            }
-        }
-    })
+            };
+        };
+    });
 
-}
+};
 

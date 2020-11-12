@@ -56,6 +56,8 @@ input#display {
     border-bottom: none;
 
     border: none;
+
+    caret-color: #2c43c4;
 }
 
 input#display-result {
