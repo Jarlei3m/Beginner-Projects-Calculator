@@ -1,5 +1,5 @@
 # Beginner Projects 
-- Get from [App ideas](https://github.com/Jarlei3m/Beginner-Projects-Calculator/new/master?readme=1) by Florin Pop.
+- Get from [App ideas](https://github.com/florinpop17/app-ideas) by Florin Pop.
 
 # Calculator
 
