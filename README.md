@@ -1,5 +1,8 @@
 # Beginner Projects 
-- Get from [App ideas](https://github.com/florinpop17/app-ideas) by Florin Pop.
+- Challenge get on [App ideas](https://github.com/florinpop17/app-ideas) by Florin Pop.
+
+### [Live Demo](appcalculator.netlify.app/)
+
 
 # Calculator
 
